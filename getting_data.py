@@ -1,16 +1,46 @@
 import pandas as pd
-import quandl, math
+import quandl, math, datetime, pickle, os
 import numpy as np
 from sklearn import preprocessing, svm
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 import plotly.graph_objects as go
-import datetime
+
+quandl.ApiConfig.api_key = 'izVRXrDHAuiF3ktGzjFd'
+
 def plot_regression(df: pd.DataFrame):
     fig = go.Figure()
     fig.add_trace(go.Scatter(x=df.index, y=df['Adj. Close']))
     fig.add_trace(go.Scatter(x=df.index, y=df['Forecast']))
-
+    fig.update_layout(
+        title=go.layout.Title(
+            text='Google stock prediction',
+            xref='paper',
+            x=0,
+            font=dict(
+                family='Courier New',
+                size=24
+            )
+        ),
+        xaxis=go.layout.XAxis(
+            title=go.layout.xaxis.Title(
+                text='Date',
+                font=dict(
+                    family='Courier New, monospace',
+                    size=18
+                )
+            )
+        ),
+        yaxis=go.layout.YAxis(
+            title=go.layout.yaxis.Title(
+                text='Closing Price',
+                font=dict(
+                    family='Courier New, monospace',
+                    size=18
+                )
+            )
+        )
+    )
     fig.show()
 
 df = quandl.get("WIKI/GOOGL")
@@ -39,12 +69,19 @@ y = np.array(df['label'])
 
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2)
 
-clf = LinearRegression(n_jobs=-1)
-clf.fit(x_train, y_train)
-accuracy = clf.score(x_test, y_test)
 
+if os.path.exists('./linearregression.pickle'):
+    pickle_in = open('linearregression.pickle', 'rb')
+    clf = pickle.load(pickle_in)
+else:
+    clf = LinearRegression(n_jobs=-1)
+    clf.fit(x_train, y_train)
+    with open('linearregression.pickle', 'wb') as f:
+        pickle.dump(clf, f)
+
+accuracy = clf.score(x_test, y_test)
 forecast_set = clf.predict(x_lately)
-print(forecast_set, accuracy, forecast_out)
+# print(forecast_set, accuracy, forecast_out)
 
 df['Forecast'] = np.nan
 
