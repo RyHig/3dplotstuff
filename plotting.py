@@ -1,6 +1,5 @@
 import plotly.graph_objects as go
 import numpy as np
-
 N = 100
 
 
@@ -12,13 +11,13 @@ def bar_2d():
     fig.show()
 
 
-def make_values(start):
+def make_spiral_values(start):
     t = np.linspace(start, start + 10, 20)
     v = (np.cos(t), np.sin(t), t)
     return v
 
 
-def spiral_3d(values):
+def scatter_3d_animate(values):
     fig = go.Figure(
         data=[go.Scatter3d(
             x=values[0],
@@ -46,5 +45,5 @@ def spiral_3d(values):
 
 
 if __name__ == "__main__":
-    v = list(map(make_values, range(N)))
-    spiral_3d(v)
+    v = list(map(make_spiral_values, range(N)))
+    scatter_3d_animate(v)
