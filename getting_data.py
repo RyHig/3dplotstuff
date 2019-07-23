@@ -6,6 +6,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 import plotly.graph_objects as go
 
+with open('./apikey.txt', 'rb') as f:
+    quandl.ApiConfig.api_key = f.read().decode("utf-8")
 
 def plot_regression(df: pd.DataFrame):
     fig = go.Figure()
