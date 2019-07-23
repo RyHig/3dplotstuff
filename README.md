@@ -1,2 +1,9 @@
-# Plotly 3D plotting and animating
+# Plotly plotting and animating
 
+Dependencies
+---
+
+- numpy
+- pandas
+- plotly
+- sklearn
