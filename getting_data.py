@@ -6,7 +6,6 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 import plotly.graph_objects as go
 
-quandl.ApiConfig.api_key = 'izVRXrDHAuiF3ktGzjFd'
 
 def plot_regression(df: pd.DataFrame):
     fig = go.Figure()
@@ -18,7 +17,7 @@ def plot_regression(df: pd.DataFrame):
             xref='paper',
             x=0,
             font=dict(
-                family='Courier New',
+                family='Courier New, monospace',
                 size=24
             )
         ),
@@ -48,13 +47,14 @@ df = df[['Adj. Open', 'Adj. High', 'Adj. Low', 'Adj. Close', 'Adj. Volume']]
 df['HL_PCT'] = (df['Adj. High'] - df['Adj. Low']) / df['Adj. Close'] * 100 
 df['PCT_change'] = (df['Adj. Close'] - df["Adj. Open"]) / df['Adj. Open'] * 100
 
+#          price          x          x               x
 df = df[['Adj. Close', 'HL_PCT', 'PCT_change', 'Adj. Volume']]
 
 forecast_col = 'Adj. Close'
 
 df.fillna(-99999, inplace=True)
 
-forecast_out = int(math.ceil(.01*len(df)))
+forecast_out = int(math.ceil(.1*len(df)))
 
 df['label'] = df[forecast_col].shift(-forecast_out)
 

@@ -1,3 +1,4 @@
 env
 .vscode
 *.pickle
+apikey.txt
