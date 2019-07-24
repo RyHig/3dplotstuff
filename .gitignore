@@ -2,3 +2,4 @@ env
 .vscode
 *.pickle
 apikey.txt
+findingmethods.py
