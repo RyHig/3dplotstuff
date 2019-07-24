@@ -1,6 +1,6 @@
 import plotly.graph_objects as go
 import numpy as np
-N = 100
+N = 5
 
 
 def bar_2d():
@@ -20,12 +20,12 @@ def make_spiral_values(start):
 def scatter_3d_animate(values):
     fig = go.Figure(
         data=[go.Scatter3d(
-            x=values[0],
-            y=values[1],
-            z=values[2],
+            x=values[0][0],
+            y=values[0][1],
+            z=values[0][2],
             mode='markers',
             marker=dict(size=12,
-                        color=v[0][2],
+                        color=values[0][2],
                         colorscale='Viridis',
                         opacity=0.8)
             )],
@@ -38,7 +38,7 @@ def scatter_3d_animate(values):
                          args=[None])])]
         ),
         frames=[go.Frame(
-            data=[go.Scatter3d(x=k[0], y=k[1], z=k[2])]) for k in v]
+            data=[go.Scatter3d(x=k[0], y=k[1], z=k[2])]) for k in values]
     )
 
     fig.show()
