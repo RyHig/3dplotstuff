@@ -117,7 +117,7 @@ else:
         pickle.dump(clf, f)
 
 # returns the r^2 of the prediction.
-# or how well our model fits our data.
+# or how well our linear regression fits our data.
 accuracy = clf.score(x_test, y_test)
 # predict the values from the last 10% of the data from our dataframe.
 forecast_set = clf.predict(x_lately)

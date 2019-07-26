@@ -3,3 +3,4 @@ env
 *.pickle
 apikey.txt
 findingmethods.py
+breast-cancer*
