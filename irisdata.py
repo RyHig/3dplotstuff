@@ -17,7 +17,7 @@ df.replace('Iris-versicolor', 2, inplace=True)
 df.replace('Iris-virginica', 3, inplace=True)
 
 # Just taking the features we're going to plot.
-x = np.array([df['sepal_length'], df['sepal_width']]).T
+x = np.array([df['petal_length'], df['petal_width']]).T
 y = np.array(df['class'])
 
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=.2)
@@ -28,7 +28,7 @@ x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=.2)
 # accuracy = clf.score(x_test, y_test)
 # print(accuracy)
 
-clf = svm.SVC(kernel='sigmoid')
+clf = svm.SVC(kernel='linear')
 clf.fit(x_train, y_train)
 
 accuracy = clf.score(x_test, y_test)
@@ -37,13 +37,15 @@ x_min, x_max = x[:, 0].min() - 1, x[:, 0].max() + 1
 y_min, y_max = x[:, 1].min() - 1, x[:, 1].max() + 1
 xx, yy = np.meshgrid(np.arange(x_min, x_max, 0.02),
                      np.arange(y_min, y_max, 0.02))
-# print(xx, yy)
+
 Z = clf.predict(np.c_[xx.ravel(), yy.ravel()])
 
 Z = Z.reshape(xx.shape)
-print(Z.shape)
-x_step = (x_max - x_min)/280
-y_step = (y_max - y_min)/220
+# The columns of the Matrix correspond to the X values.
+# The rows correspond to the Y values.
+x_step = (x_max - x_min)/Z.shape[1]
+y_step = (y_max - y_min)/Z.shape[0]
+
 # turns out ploty.graph_objects is pretty new?
 # This works, but similar code in the graph_objects format
 # just doesn't work, specifically transforms.
