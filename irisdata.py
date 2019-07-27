@@ -9,6 +9,7 @@ import plotly.graph_objects as go
 import json, codecs
 style.use('fivethirtyeight')
 
+# You can find the csv on http://archive.ics.uci.edu/ml/datasets.php
 df = pd.read_csv('iris.data')
 # this is for use with plotly later for some nice graphs.
 z = np.array(df['class'])
@@ -22,24 +23,24 @@ y = np.array(df['class'])
 
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=.2)
 
-# clf = neighbors.KNeighborsClassifier()
-# clf.fit(x_train, y_train)
-
-# accuracy = clf.score(x_test, y_test)
-# print(accuracy)
-
-clf = svm.SVC(kernel='linear')
+# K-nearest neighbors works about as well as the SVM
+clf = neighbors.KNeighborsClassifier()
 clf.fit(x_train, y_train)
+
+# clf = svm.SVC(kernel='linear')
+# clf.fit(x_train, y_train)
 
 accuracy = clf.score(x_test, y_test)
 print(accuracy)
+# To make a meshgrid, we need the lower and upper bound for each axis.
 x_min, x_max = x[:, 0].min() - 1, x[:, 0].max() + 1
 y_min, y_max = x[:, 1].min() - 1, x[:, 1].max() + 1
 xx, yy = np.meshgrid(np.arange(x_min, x_max, 0.02),
                      np.arange(y_min, y_max, 0.02))
 
+# Have to feed the xxs and the yys in a 1d array.
 Z = clf.predict(np.c_[xx.ravel(), yy.ravel()])
-
+# reshape Z back to the original shape from the meshgrid.
 Z = Z.reshape(xx.shape)
 # The columns of the Matrix correspond to the X values.
 # The rows correspond to the Y values.
@@ -51,8 +52,8 @@ y_step = (y_max - y_min)/Z.shape[0]
 # just doesn't work, specifically transforms.
 data=[dict(
     type='contour',
-    x=np.arange(x_min, x_max+1,x_step),
-    y=np.arange(y_min, y_max+1,y_step),
+    x=np.arange(x_min, x_max,x_step),
+    y=np.arange(y_min, y_max,y_step),
     z=Z,
     # contours=dict(coloring='lines'),
     opacity=0.5,
@@ -75,6 +76,8 @@ data=[dict(
 fig_dict = dict(data=data)
 pio.show(fig_dict, validate=False)
 
+# Just the matplotlib way to plt a contour with the scatter plot on top...
+# Honestly, it's simpler for this data.
 plt.contourf(xx, yy, Z, cmap=plt.cm.coolwarm, alpha=0.8)
 plt.scatter(x[:, 0], x[:, 1], c=y, cmap=plt.cm.coolwarm, linewidths=1, edgecolors='k')
 plt.show()
