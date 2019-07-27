@@ -3,4 +3,5 @@ env
 *.pickle
 apikey.txt
 findingmethods.py
-breast-cancer*
+*.data
+*.names
